@@ -13,6 +13,12 @@ public class Triplet implements Comparable<Triplet> {
     public double getPoids(){
         return this.p;
     }
+    public int[] getSommets(){
+        int[] l=new int[2];
+        l[0]=s1;
+        l[1]=s2;
+        return l;
+    }
     @Override
     public int compareTo(Triplet tr2) {
         double p = tr2.getPoids();
