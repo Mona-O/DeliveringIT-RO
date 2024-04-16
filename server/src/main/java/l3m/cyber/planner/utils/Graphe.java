@@ -1,6 +1,8 @@
 package l3m.cyber.planner.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 public class Graphe{
@@ -18,6 +20,12 @@ public class Graphe{
         this.adj[s2][s1]=1;
         this.poidsA[s2][s1]= p;
         this.poidsA[s1][s2]=p;
+    }
+    public void retirerArrete(int s1, int s2){
+        this.adj[s1][s2]=0;
+        this.adj[s2][s1]=0;
+        this.poidsA[s2][s1]= (double) 0;
+        this.poidsA[s1][s2]=(double) 0;
     }
     /**SPEC CONSTRUCTEUR
      * @param: n:int le nombre de sommets
@@ -128,8 +136,32 @@ public class Graphe{
        return Auxiliaire.integerList(n);
     }
 
+    public List<Triplet> listeAretes(){
+        List<Triplet> LA= new ArrayList<>();
+        Triplet tmp;
+        double poids;
+        for (int i=0;i<nbSommets;i++){
+            for (int j=0;j<nbSommets;j++){
+                if (adj[i][j]==1){
+                    poids=this.poidsA[i][j];
+                    tmp=new Triplet(j, i, poids);
+                    LA.add(tmp);
+
+                }
+            }
+        } return LA;
+    }
 
 
+    public List<Triplet> aretesTriees(boolean croissant){
+        List<Triplet> L_tmp=this.listeAretes();
+        Collections.sort(L_tmp);
+    
+        if (!croissant){
+            Collections.reverse(L_tmp);
+        }
+        return L_tmp;
+    }
 
     /*MAIN POUR TEST A RECOMMENTER */
 
