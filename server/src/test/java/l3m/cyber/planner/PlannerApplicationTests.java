@@ -2,6 +2,7 @@ package l3m.cyber.planner;
 
 import l3m.cyber.planner.requests.PlannerParameter;
 import l3m.cyber.planner.responses.PlannerResult;
+import l3m.cyber.planner.utils.PartitionAlea;
 import l3m.cyber.planner.utils.Planner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +35,22 @@ class PlannerApplicationTests {
         PlannerResult pr=pl.result();
 		assertTrue(pr.tournees() !=null); //le tableau tournees doit etre non null
 		assertTrue(pr.longTournees() != null); // idem, le tableau longTournees doit etre non null
+	}
+
+	@Test
+	void partitionTest(){
+		Double[][] matrix = {{0.0,1.1},{1.1,0.0}};
+		Integer k = 2;
+		PartitionAlea partitionAlea = new PartitionAlea(k, 5);
+		for (int i = 0 ; i < k ; i++){
+			assertTrue(partitionAlea.getPartie(i)!=null);
+		}
+		System.out.println(partitionAlea.toString());
+		partitionAlea.partitionne(matrix);
+		System.out.println(partitionAlea.toString());
+		for (int i = 0 ; i < k ; i++){
+			assertTrue(partitionAlea.getPartie(i)!=null);
+		}
 	}
 	
 }
