@@ -2,11 +2,13 @@ package l3m.cyber.planner;
 
 import l3m.cyber.planner.requests.PlannerParameter;
 import l3m.cyber.planner.responses.PlannerResult;
+import l3m.cyber.planner.utils.PartitionAlea;
+import l3m.cyber.planner.utils.PartitionKCentres;
 import l3m.cyber.planner.utils.Planner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class PlannerApplicationTests {
@@ -21,7 +23,50 @@ class PlannerApplicationTests {
 		
 	}
 
-	// Vous pouvez ajouter des tests unitaires ici si vous le souhaitez
+	@Test
+	void partitionTest(){
+		Double[][] matrix = {{0.0,1.1},{1.1,0.0}};
+		int k = 2;
+		PartitionAlea partitionAlea = new PartitionAlea(10, k);
+		for (int i = 0 ; i < k ; i++){
+			assertNotNull(partitionAlea.getPartie(i));
+			assertEquals(0,partitionAlea.getPartie(i).getFirst());
+		}
+		System.out.println(partitionAlea.toString());
+		partitionAlea.partitionne(matrix);
+		System.out.println(partitionAlea.toString());
+		for (int i = 0 ; i < k ; i++){
+			assertNotNull(partitionAlea.getPartie(i));
+			assertEquals(0,partitionAlea.getPartie(i).getFirst());
+
+		}
+	}
+
+	@Test
+	public void testPartitionKCentre() {
+		// Configuration du test
+		Double[][] distances = {
+				{0.0, 0.8, 1.5, 1.2, 1.3, 0.9, 1.4, 1.1, 1.0, 1.6},
+				{0.8, 0.0, 1.4, 1.1, 1.2, 0.8, 1.3, 1.0, 0.9, 1.5},
+				{1.5, 1.4, 0.0, 1.7, 2.2, 1.6, 2.1, 1.8, 1.9, 0.5},
+				{1.2, 1.1, 1.7, 0.0, 1.4, 1.1, 1.3, 1.2, 1.0, 1.8},
+				{1.3, 1.2, 2.2, 1.4, 0.0, 1.3, 2.1, 1.5, 1.4, 0.4},
+				{0.9, 0.8, 1.6, 1.1, 1.3, 0.0, 1.4, 1.1, 1.0, 1.7},
+				{1.4, 1.3, 2.1, 1.3, 2.1, 1.4, 0.0, 1.4, 1.3, 0.3},
+				{1.1, 1.0, 1.8, 1.2, 1.5, 1.1, 1.4, 0.0, 1.1, 1.9},
+				{1.0, 0.9, 1.9, 1.0, 1.4, 1.0, 1.3, 1.1, 0.0, 2.0},
+				{1.6, 1.5, 0.5, 1.8, 0.4, 1.7, 0.3, 1.9, 2.0, 0.0}
+		};
+		int k = 2;
+
+		// Création d'une instance de PartitionKCentre
+		PartitionKCentres partitionKCentre = new PartitionKCentres(distances.length,k);
+		System.out.println(partitionKCentre.toString());
+		partitionKCentre.partitionne(distances);
+		System.out.println(partitionKCentre.toString());
+
+
+	}
 
 	
 	@Test
