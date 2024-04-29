@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import java.util.Collections;
+import java.util.List;
 
 
 public class Graphe{
@@ -36,6 +38,18 @@ public class Graphe{
         this.adj[s1][s2]=1;
         this.adj[s2][s1]=1;
         this.ajouterPoids(s1, s2, p);
+    }
+    public void retirerArrete(int s1, int s2){
+        this.adj[s1][s2]=0;
+        this.adj[s2][s1]=0;
+        this.poidsA[s2][s1]= (double) 0;
+        this.poidsA[s1][s2]=(double) 0;
+    }
+    public void retirerArrete(int s1, int s2){
+        this.adj[s1][s2]=0;
+        this.adj[s2][s1]=0;
+        this.poidsA[s2][s1]= (double) 0;
+        this.poidsA[s1][s2]=(double) 0;
     }
     public void retirerArrete(int s1, int s2){
         this.adj[s1][s2]=0;
@@ -276,6 +290,15 @@ public class Graphe{
         return g2;
     }
 
+    public List<Triplet> aretesTriees(boolean croissant){
+        List<Triplet> L_tmp=this.listeAretes();
+        Collections.sort(L_tmp);
+    
+        if (!croissant){
+            Collections.reverse(L_tmp);
+        }
+        return L_tmp;
+    }
 
     /*MAIN POUR TEST A RECOMMENTER */
 
