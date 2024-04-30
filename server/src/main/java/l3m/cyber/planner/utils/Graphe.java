@@ -9,14 +9,17 @@ import java.util.List;
 
 
 public class Graphe{
+    
+    //////////////  ATTRIBUTS/////////////////////////////////////////7
+
     protected int nbSommets;
     private int[][] adj; //matrice d'adjacence remplie de 0 t 1, symmétrique
     protected Double[][] poidsA ;//matrice des poids des arêtes , pourra etre null si pas de poids
     private ArrayList<Integer> nomSommets; // au debut on peut utilise nb 0 a nbS-1 
 
-    public ArrayList<Integer> getNomSommets(){
-        return this.nomSommets;
-    }
+    
+    
+    ///////////////// CONSTRUCTEUR ////////////////////////////////7   
     public Graphe(int nbSommets, List<Triplet> triplets) {
         this(nbSommets);
         for (Triplet triplet : triplets) {
@@ -27,6 +30,38 @@ public class Graphe{
             }
         }
     }
+    /**SPEC CONSTRUCTEUR
+     * @param: n:int le nombre de sommets
+     * @return graphe a n sommets, avec les noms des sommets=0 à n-1 
+     */
+    public Graphe(int n){
+         this.nbSommets=n;
+         this.pondereAdj();
+         this.nomSommets=this.tsp1(n); // a changer quand on change les noms + tsp
+         this.pondereAretes();
+     }
+    /**SPEC CONSTRUCTEUR
+     * @param: poidsA tableau de poids de chque arete, 
+     *          nomSommets: array de int represetnant les nom distincts des sommets du graphe
+     * @return : Graphe avec ces elements 
+     */
+    public Graphe( Double[][] poidsA,ArrayList<Integer> nomSommets){
+        if (Auxiliaire.estCarreeSym(poidsA)){
+            this.nbSommets=poidsA.length;
+            adj=Auxiliaire.poidsToAdjacence(poidsA);
+            this.nomSommets=nomSommets;
+            this.poidsA=poidsA;
+        }
+        else{
+            throw new Error("poidsA donné faux");
+        }
+
+    }
+    ////////////////////////////////////////GETTER////////////////////////////////7
+    public ArrayList<Integer> getNomSommets(){
+        return this.nomSommets;
+    }
+    ///////////////////////////////////////// SETTER///////////////////////7
 
 
     public void ajouterPoids(int s1, int s2, double poids) {
@@ -50,54 +85,12 @@ public class Graphe{
         this.poidsA[s2][s1]= (double) 0;
         this.poidsA[s1][s2]=(double) 0;
     }
-    /**SPEC CONSTRUCTEUR
-     * @param: n:int le nombre de sommets
-     * @return graphe a n sommets, avec les noms des sommets=0 à n-1 
-     */
-    public Graphe(int n){
-       // int[][] adj=new int[n][n]; //matrice nxn d'adjacence avec aucun arete
-
-
-        this.nbSommets=n;
-        this.pondereAdj();
-        this.nomSommets=this.tsp1(n); // a changer quand on change les noms + tsp
-        this.pondereAretes();
-    }
-    /**SPEC CONSTRUCTEUR
-     * @param: poidsA tableau de poids de chque arete, 
-     *          nomSommets: array de int represetnant les nom distincts des sommets du graphe
-     * @return : Graphe avec ces elements 
-     */
-    public Graphe( Double[][] poidsA,ArrayList<Integer> nomSommets){
-        if (Auxiliaire.estCarreeSym(poidsA)){
-            this.nbSommets=poidsA.length;
-            adj=Auxiliaire.poidsToAdjacence(poidsA);
-            this.nomSommets=nomSommets;
-            this.poidsA=poidsA;
-        }
-        else{
-            throw new Error("poidsA donné faux");
-        }
-
-    }
-    public Graphe clone() {
-        Graphe clone = new Graphe(this.nbSommets);
-
-        clone.poidsA=this.poidsA.clone();
-        clone.adj=this.adj.clone();
-
-        // Copier les noms des sommets
-        clone.nomSommets = new ArrayList<>(this.nomSommets);
-
-        return clone;
-    }
-
-
-    /**SPEC
+    ///////////////////////7SETTER DEFAUT MATRICE POIDS ET ADJ  ////////////////////////////////////77
+        /**SPEC
      * @param: none
      * @return: change la matrice de poids ponderes de null vers une matrice remplie de 1 pour toutes les aretes par defaut*/
 
-    public void pondereAretes(){
+     private void pondereAretes(){
         Double[][] tmp= new Double[this.nbSommets][this.nbSommets];
         for (int i = 0; i < this.nbSommets; i++) {
             for(int j=0;j<this.nbSommets;j++){
@@ -110,7 +103,7 @@ public class Graphe{
         this.poidsA=tmp;
     }
 
-    public void pondereAdj(){
+    private void pondereAdj(){
         int[][] tmp= new int[this.nbSommets][this.nbSommets];
         for (int i = 0; i < this.nbSommets; i++) {
             for(int j=0;j<this.nbSommets;j++){
@@ -122,6 +115,50 @@ public class Graphe{
 
         this.adj=tmp;
     }
+
+
+    ////////////////////////////////////////FONCTIONS DIVERS /////////////////////////////////77
+    public Graphe clone() {
+        Graphe clone = new Graphe(this.nbSommets);
+
+        clone.poidsA=this.poidsA.clone();
+        clone.adj=this.adj.clone();
+
+        // Copier les noms des sommets
+        clone.nomSommets = new ArrayList<>(this.nomSommets);
+
+        return clone;
+    }
+    public ArrayList<Integer> tsp1(int n){
+        return Auxiliaire.integerList(n);
+     }
+     public ArrayList<Triplet> listeAretes(){
+         ArrayList<Triplet> LA= new ArrayList<>();
+         Triplet tmp;
+         double poids;
+ 
+         for (int i=0;i<nbSommets;i++){
+             for (int j=0;j<nbSommets;j++){
+                 if (this.adj[i][j]==1){
+                     poids=this.poidsA[i][j];
+                     tmp=new Triplet(j, i, poids);
+                     LA.add(tmp);
+ 
+                 }
+             }
+         } return LA;
+     }
+     public ArrayList<Triplet> aretesTriees(boolean croissant){
+        ArrayList<Triplet> L_tmp=this.listeAretes();
+        Collections.sort(L_tmp);
+
+        if (!croissant){
+            Collections.reverse(L_tmp);
+        }
+        return L_tmp;
+    }
+    ///////////////////////////////////////////////AFFICHAGE///////////////////////////
+    
     /**SPEC toString 
      * @return: renvoie une chaine de caractere qui est tous les elements de l'element graphe de notre classe Graphe
      */
@@ -162,29 +199,7 @@ public class Graphe{
         }
         return result;
     }
-    public ArrayList<Integer> tsp1(int n){
-       return Auxiliaire.integerList(n);
-    }
-    public List<Triplet> listeAretes(){
-        List<Triplet> LA= new ArrayList<>();
-        Triplet tmp;
-        double poids;
-
-        for (int i=0;i<nbSommets;i++){
-            for (int j=0;j<nbSommets;j++){
-                if (this.adj[i][j]==1){
-                    poids=this.poidsA[i][j];
-                    tmp=new Triplet(j, i, poids);
-                    LA.add(tmp);
-
-                }
-            }
-        } return LA;
-    }
-
-
-
-    public void afficherAretesTriees(List<Triplet> aretesTriees) {
+    private void afficherAretesTriees(List<Triplet> aretesTriees) {
         System.out.println("Liste des arêtes triées :");
         for (Triplet triplet : aretesTriees) {
             int[] sommets = triplet.getSommets();
@@ -192,9 +207,63 @@ public class Graphe{
             System.out.println("(" + sommets[0] + ", " + sommets[1] + ") : poids = " + poids);
         }
     }
-
-
-
+    //////////////////////////////////////////////PARCOURS DFS DIVERS ////////////////////////////7
+        private List<Triplet> dfs(int u, boolean[] visite) {
+            List<Triplet> tripletsParcourus = new ArrayList<>();
+            Stack<Integer> pile = new Stack<>();
+            pile.push(u);
+            while (!pile.isEmpty()) {
+                int sommet = pile.pop();
+                visite[sommet] = true;
+                for (int voisin = 0; voisin < nbSommets; voisin++) {
+                    if (adj[sommet][voisin] == 1 && !visite[voisin]) {
+                        pile.push(voisin);
+                        tripletsParcourus.add(new Triplet(sommet, voisin, poidsA[sommet][voisin]));
+                    }
+                }
+            }
+            return tripletsParcourus;
+        }
+    
+    
+        private ArrayList<Triplet> dfsUnique(int u, boolean[] visite) {
+            ArrayList<Triplet> tripletsParcourusUniques = new ArrayList<>();
+            Stack<Integer> pile = new Stack<>();
+            pile.push(u);
+            while (!pile.isEmpty()) {
+    
+                int sommet = pile.pop();
+                if (!visite[sommet]){
+    
+    
+                visite[sommet] = true;
+                for (int voisin = 0; voisin < nbSommets; voisin++) {
+                    if (adj[sommet][voisin] == 1 && !visite[voisin]) {
+                        pile.push(voisin);
+                        tripletsParcourusUniques.add(new Triplet(sommet, voisin, poidsA[sommet][voisin]));
+                    }
+                }
+            }
+            }
+            return tripletsParcourusUniques;
+        }
+        private ArrayList<Integer> sommetDFS(ArrayList<Triplet> T){
+             ArrayList<Integer> l = new ArrayList<>();
+             for (int i=0;i<T.size();i++){
+                int s1=T.get(i).getS1();
+                int s2=T.get(i).getS2();
+                if (!l.contains(s1)){
+                    l.add(s1);
+                }
+                if (!l.contains(s2)){
+                    l.add(s2);
+                }
+             }
+             return l;
+    
+        }
+    ////////////////////////////////FCT INTERMEDIAIRE 
+        
     public Graphe KruskalInv(){
         Graphe CopieI=this.clone();
         List<Triplet> LA= CopieI.aretesTriees(false);
@@ -226,65 +295,37 @@ public class Graphe{
         return true;
     }
 
-    private List<Triplet> dfs(int u, boolean[] visite) {
-        List<Triplet> tripletsParcourus = new ArrayList<>();
-        Stack<Integer> pile = new Stack<>();
-        pile.push(u);
-        while (!pile.isEmpty()) {
-            int sommet = pile.pop();
-            visite[sommet] = true;
-            for (int voisin = 0; voisin < nbSommets; voisin++) {
-                if (adj[sommet][voisin] == 1 && !visite[voisin]) {
-                    pile.push(voisin);
-                    tripletsParcourus.add(new Triplet(sommet, voisin, poidsA[sommet][voisin]));
+
+    private ArrayList<Triplet> cheminFin(ArrayList<Integer> l,ArrayList<Triplet> La){
+        ArrayList<Triplet> s=new ArrayList<>();
+        for(int i=0;i<l.size()-1;i++){
+            for(int j=0;j<La.size();j++){
+                if ((l.get(i)==La.get(j).getS1()&&l.get(i+1)==La.get(j).getS2())){
+                    if (!s.contains(La.get(j))){
+                        s.add(La.get(j));
+                    }
                 }
             }
         }
-        return tripletsParcourus;
+        return s;
     }
-
-
-    private List<Triplet> dfsUnique(int u, boolean[] visite) {
-        List<Triplet> tripletsParcourusUniques = new ArrayList<>();
-        Stack<Integer> pile = new Stack<>();
-        pile.push(u);
-        while (!pile.isEmpty()) {
-
-            int sommet = pile.pop();
-            if (!visite[sommet]){
-
-
-            visite[sommet] = true;
-            for (int voisin = 0; voisin < nbSommets; voisin++) {
-                if (adj[sommet][voisin] == 1 && !visite[voisin]) {
-                    pile.push(voisin);
-                    tripletsParcourusUniques.add(new Triplet(sommet, voisin, poidsA[sommet][voisin]));
-                }
-            }
-        }
-        }
-        return tripletsParcourusUniques;
-    }
-
+    ////////////////////////////V.2.2 TSP
     public Graphe tsp2(){
+        ArrayList<Triplet> origi_sommets=this.aretesTriees(false);
+        afficherAretesTriees(origi_sommets);
         Graphe g=this.KruskalInv();
         boolean[] visite = new boolean[nbSommets];
-        List<Triplet> La=g.dfsUnique(0, visite);
+        ArrayList<Triplet> La=g.dfsUnique(0, visite);
+        ArrayList<Integer> l= g.sommetDFS(La);
+        System.out.println("\n chemin fin : \n");
+        afficherAretesTriees(cheminFin(l,origi_sommets));
         Graphe g2=new Graphe(nbSommets, La);
         return g2;
     }
 
-    public List<Triplet> aretesTriees(boolean croissant){
-        List<Triplet> L_tmp=this.listeAretes();
-        Collections.sort(L_tmp);
 
-        if (!croissant){
-            Collections.reverse(L_tmp);
-        }
-        return L_tmp;
-    }
 
-    /*MAIN POUR TEST A RECOMMENTER */
+    /*/////////////////////////MAIN POUR TEST UNITAIRE A RECOMMENTER/////////////////////////////////////////7 */
 
 
         public class Main {
@@ -301,15 +342,18 @@ public class Graphe{
                 System.out.println(graphe2);
                 System.out.println("--------------------------------------------");
                 // Création d'un graphe avec des poids spécifiques et des noms de sommets
-                Double[][] poids = {{0.0,4.0,2.0,4.0}, {4.0, 0.0, 5.0,3.0}, {2.0, 5.0, 0.0,0.0}, {4.0, 3.0, 0.0,0.0}};
+                Double[][] poids = {{0.0,4.0,2.0,4.0}, {4.0, 0.0, 5.0,3.0}, {2.0, 5.0, 0.0,2.0}, {4.0, 3.0, 2.0,0.0}};
                 ArrayList<Integer> nomsSommets = new ArrayList<>(Arrays.asList(0, 1, 2,3));
                 Graphe graphe3 = new Graphe(poids, nomsSommets);
                 System.out.println("Graphe 3 :");
                 System.out.println(graphe3);
 
                 Graphe graphe4=graphe3.KruskalInv();
-                System.out.println("Graphe 4 :");
-                System.out.println(graphe4);
+                System.out.println("Graphe 4 dfs ");
+                //System.out.println(graphe4);
+                boolean[] visite = new boolean[graphe4.nbSommets];
+                //graphe4.afficherAretesTriees(graphe4.dfs(0, visite));
+                graphe3.tsp2();
 /* 
                 // Clonage du graphe 2
                 Graphe cloneGraphe2 = (Graphe) graphe2.clone();

@@ -39,19 +39,20 @@ public class Planner{
         public PlannerResult result() {
             ArrayList<ArrayList<Integer>> tournees = new ArrayList<>();
             ArrayList<Double> longTournees = new ArrayList<>();
-
+        
             // Pour chaque groupe de livreurs, calculer la tournée et la longueur de la tournée
             for (int i = 0; i < k; i++) {
-                ArrayList<Integer> livreurs = partition.getPartie(i);
+                ArrayList<Integer> livreurs = this.partition.getPartie(i); // Utilisation de this.partition
                 Double[][] sousMatrice = extraireSousMatrice(livreurs);
                 Graphe graphe = new Graphe(sousMatrice, livreurs);
                 Graphe tsp = graphe.tsp2();
                 tournees.add(tsp.getNomSommets());
                 longTournees.add(calculerLongueurTournee(tsp.getNomSommets()));
             }
-
+        
             return new PlannerResult(tournees, longTournees);
         }
+        
 
         private Double[][] extraireSousMatrice(ArrayList<Integer> livreurs) {
             int n = livreurs.size();
