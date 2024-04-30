@@ -30,5 +30,8 @@ public class Triplet implements Comparable<Triplet> {
         double p = tr2.getPoids();
          return p>this.p ?  (-1) : p<this.p ? 1 :0; //si poids de tr2>poids alors -1, sinon 1 si poids de tr2< poid; si egaux alors 0
     }
-    
+    @Override
+    public String toString() {
+        return "(" + s1 + ", " + s2 + "): " + p;
+    }
 }
