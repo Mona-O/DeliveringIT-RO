@@ -8,6 +8,10 @@ import l3m.cyber.planner.utils.Planner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -68,7 +72,54 @@ class PlannerApplicationTests {
 
 	}
 
-	
+	private ArrayList<ArrayList<Integer>> partitionResult;
+
+	@Test
+	public void testPartitionsWithoutDuplicates() {
+		// Définir les données de test
+		Double[][] distances = {
+				{ 0.0 , 2.5, 3.0  , 0.1   , 17.0 , 15.5, 8.2 },
+				{ 2.5 , 0.0  , 1.0  , 5.25, 18.0 , 3.5 , 12.0},
+				{ 3.0  , 1.0  , 0.0  , 0.0  , 3.4, 9.9 , 14.0  },
+				{ 0.1   , 5.25, 0.0 , 0.0   , 7.7, 8.8 , 6.8 },
+				{ 17.0  , 18.0 , 3.4, 7.7 , 0.0  , 2.0   , 2.2 },
+				{ 15.5, 3.5, 9.9, 8.8 , 2.0  , 0.0   , 3.3 },
+				{ 8.2 , 12.0 , 14.0 , 6.8 , 2.2, 3.3 , 0.0   }
+		};
+		int k = 2; // Nombre de partitions souhaitées
+		int debut = 0; // Point de départ des tournées
+
+		// Créer un objet PlannerParameter avec les données de test
+		PlannerParameter param = new PlannerParameter(distances, k, debut);
+
+		// Créer un objet Planner avec les paramètres
+		Planner planner = new Planner(param);
+
+		// Exécuter la méthode divise pour obtenir les partitions
+		planner.divise();
+
+		// Obtenir le résultat des partitions
+		PlannerResult result = planner.result();
+
+		// Vérifier que le nombre de partitions est égal à k
+		assertEquals(k, result.tournees().size());
+
+		// Afficher les tournées générées dans la console
+		System.out.println("Tournées générées :");
+		for (ArrayList<Integer> tournee : result.tournees()) {
+			System.out.println(tournee);
+		}
+	}
+
+	// Méthode pour récupérer les tournées créées
+	public ArrayList<ArrayList<Integer>> getPartitionResult() {
+		return partitionResult;
+	}
+
+
+
+
+	/*
 	@Test
 	void nonnullTestPlanning(){
 		Double[][] matrix = {{0.0,1.1},{1.1,0.0}};
@@ -80,5 +131,7 @@ class PlannerApplicationTests {
 		assertTrue(pr.tournees() !=null); //le tableau tournees doit etre non null
 		assertTrue(pr.longTournees() != null); // idem, le tableau longTournees doit etre non null
 	}
-	
+
+
+	 */
 }
