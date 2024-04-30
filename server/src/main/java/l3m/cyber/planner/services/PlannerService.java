@@ -12,6 +12,9 @@ public class PlannerService {
 
     public PlannerResult getResult(PlannerParameter params){
         Planner pl= new Planner(params);
+        pl.divise();
+        pl.calculeTournees();
+        pl.calculeLongTournees();
         return pl.result();
     }
 

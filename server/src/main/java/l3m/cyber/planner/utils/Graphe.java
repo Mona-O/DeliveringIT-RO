@@ -12,7 +12,14 @@ public class Graphe{
     protected int nbSommets;
     private int[][] adj; //matrice d'adjacence remplie de 0 t 1, symmétrique
     protected Double[][] poidsA ;//matrice des poids des arêtes , pourra etre null si pas de poids
-    private ArrayList<Integer> nomSommets; // au debut on peut utilise nb 0 a nbS-1 
+    private ArrayList<Integer> nomSommets; // au debut on peut utilise nb 0 a nbS-1
+
+    public Graphe(int nbSommets, ArrayList<Integer> sommets) {
+        this.nbSommets = nbSommets;
+        this.adj = new int[nbSommets][nbSommets];
+        this.poidsA = new Double[nbSommets][nbSommets];
+        this.nomSommets = sommets;
+    }
 
     public ArrayList<Integer> getNomSommets(){
         return this.nomSommets;
