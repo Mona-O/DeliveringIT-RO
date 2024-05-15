@@ -70,7 +70,6 @@ class PlannerApplicationTests {
 
 	}
 
-	private ArrayList<ArrayList<Integer>> partitionResult;
 
 	@Test
 	public void testPartitionsWithoutDuplicates() {
@@ -109,27 +108,5 @@ class PlannerApplicationTests {
 		}
 	}
 
-	// Méthode pour récupérer les tournées créées
-	public ArrayList<ArrayList<Integer>> getPartitionResult() {
-		return partitionResult;
-	}
 
-
-
-
-	/*
-	@Test
-	void nonnullTestPlanning(){
-		Double[][] matrix = {{0.0,1.1},{1.1,0.0}};
-		int k=1;
-		int start=0;
-		PlannerParameter param= new PlannerParameter(matrix, k, start);
-		Planner pl= new Planner(param);
-        PlannerResult pr=pl.result();
-		assertTrue(pr.tournees() !=null); //le tableau tournees doit etre non null
-		assertTrue(pr.longTournees() != null); // idem, le tableau longTournees doit etre non null
-	}
-
-
-	 */
 }
