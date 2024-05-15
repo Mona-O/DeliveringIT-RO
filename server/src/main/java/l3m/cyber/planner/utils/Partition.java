@@ -18,15 +18,7 @@ public abstract class Partition {
     ///////////////////////////////METHODES/////////////////////////
 
 
-    /*@param : elems : liste d'élements à partitionner
-     *          k: le nombre de parties souhaitée dans la partition
-     *          elemSpecial : qui est un élément qui devra se trouver dans toutes les parties de la partition
-     * constructeur crée une Partition dont le
-     * but sera de partitionner les éléments
-     * elems en k parties, avec elemSpecial
-     * apparaissant dans chaque partie
-     * (à part cela, les parties sont disjointes)
-     * */
+
     public Partition(ArrayList<Integer> elems, Integer k,Integer elemSpecial ){
         this.elems = elems;
         this.nbElem = elems.size();
