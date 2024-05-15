@@ -308,31 +308,7 @@ public class Graphe{
             Graphe graphe4=graphe3.KruskalInv();
             System.out.println("Graphe 4 :");
             System.out.println(graphe4);
-/*
-                // Clonage du graphe 2
-                Graphe cloneGraphe2 = (Graphe) graphe2.clone();
-                System.out.println("Clone du Graphe 2 :");
-                System.out.println(cloneGraphe2);
 
-
-
-                // Ajout d'une arête au graphe 1
-                graphe1.ajouteArrete(0, 4,8);
-                graphe1.ajouteArrete(0, 3,5);
-                graphe1.ajouteArrete(1, 2,3);
-                graphe1.ajouteArrete(2, 4,2);
-                graphe1.ajouteArrete(1, 4,3);
-                graphe1.ajouteArrete(4, 3,6);
-
-
-                System.out.println("Graphe 1 après :");
-                System.out.println(graphe1);
-
-                // Test de la méthode tsp2
-               // Graphe graphe3 = graphe1.tsp2();
-                //System.out.println("Graphe 3 après application de tsp2 :");
-                //System.out.println(graphe3);
-                */
 
         }
     }
