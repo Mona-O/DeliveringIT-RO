@@ -2,7 +2,11 @@ package l3m.cyber.planner.utils;
 
 import l3m.cyber.planner.requests.PlannerParameter;
 import l3m.cyber.planner.responses.PlannerResult;
+import lombok.Getter;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class Planner {
     private Double[][] distances;
@@ -37,7 +41,7 @@ public class Planner {
         if (k > distances.length) {
             throw new IllegalArgumentException("k cannot be greater than the number of elements.");
         }
-        partition = new PartitionKCentres(distances.length, k);
+        partition = new RandomPartition(distances.length, k, 0.001);
         partition.partitionne(distances);
 
         tournees = new ArrayList<>();
@@ -79,7 +83,7 @@ public class Planner {
         for (int i = 0; i < tournee.size() - 1; i++) {
             length += distances[tournee.get(i)][tournee.get(i + 1)];
         }
-        length += distances[tournee.get(tournee.size() - 1)][tournee.get(0)]; // Completing the loop
+        length += distances[tournee.get(tournee.size() - 1)][tournee.get(0)];
         return length;
     }
 

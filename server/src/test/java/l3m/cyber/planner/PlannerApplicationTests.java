@@ -5,6 +5,7 @@ import l3m.cyber.planner.responses.PlannerResult;
 import l3m.cyber.planner.utils.PartitionAlea;
 import l3m.cyber.planner.utils.PartitionKCentres;
 import l3m.cyber.planner.utils.Planner;
+import l3m.cyber.planner.utils.RandomPartition;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -48,16 +49,13 @@ class PlannerApplicationTests {
 	public void testPartitionKCentre() {
 		// Configuration du test
 		Double[][] distances = {
-				{0.0, 0.8, 1.5, 1.2, 1.3, 0.9, 1.4, 1.1, 1.0, 1.6},
-				{0.8, 0.0, 1.4, 1.1, 1.2, 0.8, 1.3, 1.0, 0.9, 1.5},
-				{1.5, 1.4, 0.0, 1.7, 2.2, 1.6, 2.1, 1.8, 1.9, 0.5},
-				{1.2, 1.1, 1.7, 0.0, 1.4, 1.1, 1.3, 1.2, 1.0, 1.8},
-				{1.3, 1.2, 2.2, 1.4, 0.0, 1.3, 2.1, 1.5, 1.4, 0.4},
-				{0.9, 0.8, 1.6, 1.1, 1.3, 0.0, 1.4, 1.1, 1.0, 1.7},
-				{1.4, 1.3, 2.1, 1.3, 2.1, 1.4, 0.0, 1.4, 1.3, 0.3},
-				{1.1, 1.0, 1.8, 1.2, 1.5, 1.1, 1.4, 0.0, 1.1, 1.9},
-				{1.0, 0.9, 1.9, 1.0, 1.4, 1.0, 1.3, 1.1, 0.0, 2.0},
-				{1.6, 1.5, 0.5, 1.8, 0.4, 1.7, 0.3, 1.9, 2.0, 0.0}
+				{0.0, 20.0, 25.0, 30.0, 80.0, 75.0, 50.0},
+				{20.0, 0.0, 35.0, 50.0, 90.0, 45.0, 70.0},
+				{25.0, 35.0, 0.0, 40.0, 35.0, 85.0, 95.0},
+				{30.0, 50.0, 40.0, 0.0, 70.0, 80.0, 60.0},
+				{80.0, 90.0, 35.0, 70.0, 0.0, 55.0, 45.0},
+				{75.0, 45.0, 85.0, 80.0, 55.0, 0.0, 65.0},
+				{50.0, 70.0, 95.0, 60.0, 45.0, 65.0, 0.0}
 		};
 		int k = 2;
 
@@ -78,8 +76,8 @@ class PlannerApplicationTests {
 		Double[][] distances = {
 				{ 0.0 , 2.5, 3.0  , 0.1   , 17.0 , 15.5, 8.2 },
 				{ 2.5 , 0.0  , 1.0  , 5.25, 18.0 , 3.5 , 12.0},
-				{ 3.0  , 1.0  , 0.0  , 0.0  , 3.4, 9.9 , 14.0  },
-				{ 0.1   , 5.25, 0.0 , 0.0   , 7.7, 8.8 , 6.8 },
+				{ 3.0  , 1.0  , 0.0  , 0.7  , 3.4, 9.9 , 14.0  },
+				{ 0.1   , 5.25, 0.7 , 0.0   , 7.7, 8.8 , 6.8 },
 				{ 17.0  , 18.0 , 3.4, 7.7 , 0.0  , 2.0   , 2.2 },
 				{ 15.5, 3.5, 9.9, 8.8 , 2.0  , 0.0   , 3.3 },
 				{ 8.2 , 12.0 , 14.0 , 6.8 , 2.2, 3.3 , 0.0   }
@@ -114,22 +112,49 @@ class PlannerApplicationTests {
 		return partitionResult;
 	}
 
-
-
-
-	/*
 	@Test
-	void nonnullTestPlanning(){
-		Double[][] matrix = {{0.0,1.1},{1.1,0.0}};
-		int k=1;
-		int start=0;
-		PlannerParameter param= new PlannerParameter(matrix, k, start);
-		Planner pl= new Planner(param);
-        PlannerResult pr=pl.result();
-		assertTrue(pr.tournees() !=null); //le tableau tournees doit etre non null
-		assertTrue(pr.longTournees() != null); // idem, le tableau longTournees doit etre non null
+	public void testRandomPartition() {
+		Double[][] distances = {
+				{0.0, 20.0, 25.0, 30.0, 80.0, 75.0, 50.0},
+				{20.0, 0.0, 35.0, 50.0, 90.0, 45.0, 70.0},
+				{25.0, 35.0, 0.0, 40.0, 35.0, 85.0, 95.0},
+				{30.0, 50.0, 40.0, 0.0, 70.0, 80.0, 60.0},
+				{80.0, 90.0, 35.0, 70.0, 0.0, 55.0, 45.0},
+				{75.0, 45.0, 85.0, 80.0, 55.0, 0.0, 65.0},
+				{50.0, 70.0, 95.0, 60.0, 45.0, 65.0, 0.0}
+		};
+		int k = 3;
+
+
+		RandomPartition partition = new RandomPartition(distances.length,k, 0.1);
+		System.out.println(partition.toString());
+		partition.partitionne(distances);
+		System.out.println(partition.toString());
 	}
 
 
-	 */
+
+	@Test
+	void nonnullTestPlanning(){
+		Double[][] matrix = {
+				{0.0, 20.0, 25.0, 30.0, 80.0, 75.0, 50.0},
+				{20.0, 0.0, 35.0, 50.0, 90.0, 45.0, 70.0},
+				{25.0, 35.0, 0.0, 40.0, 35.0, 85.0, 95.0},
+				{30.0, 50.0, 40.0, 0.0, 70.0, 80.0, 60.0},
+				{80.0, 90.0, 35.0, 70.0, 0.0, 55.0, 45.0},
+				{75.0, 45.0, 85.0, 80.0, 55.0, 0.0, 65.0},
+				{50.0, 70.0, 95.0, 60.0, 45.0, 65.0, 0.0}};
+		int k=2;
+		int start=0;
+		PlannerParameter param= new PlannerParameter(matrix, k, start);
+		Planner pl= new Planner(param);
+		pl.divise();
+		pl.calculeTournees();
+		pl.calculeLongTournees();
+        PlannerResult pr=pl.result();
+		System.out.println(pr.toString());
+	}
+
+
+
 }

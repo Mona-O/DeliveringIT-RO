@@ -197,10 +197,9 @@ public class Graphe{
         Graphe CopieI=this.clone();
         List<Triplet> LA= CopieI.aretesTriees(false);
         int[] derniereAreteEnleve = null;
-
         int[] tmp;
         double poidsArajouterFin=0.0;
-        while(CopieI.estConnexe()){
+        while(CopieI.estConnexe() && !LA.isEmpty()){
             tmp=LA.get(0).getSommets();
             CopieI.retirerArrete(tmp[0], tmp[1]);
             poidsArajouterFin=LA.get(0).getPoids();

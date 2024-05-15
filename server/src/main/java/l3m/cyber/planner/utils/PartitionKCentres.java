@@ -30,10 +30,11 @@ public class PartitionKCentres extends Partition {
         // Sélectionner les k-1 autres centres
         for (int j = 1; j < k; j++) {
             int nextCenter = findFurthest(minDistToCenter);
+            System.out.println(nextCenter);
             centers.add(nextCenter);
             for (int i = 0; i < nbElem; i++) {
                 double distance = distances[i][nextCenter];
-                if (distance < minDistToCenter[i]) {
+                if (distance < minDistToCenter[i] ) {
                     minDistToCenter[i] = distance;
                     nearestCenter[i] = nextCenter;
                 }
@@ -42,11 +43,15 @@ public class PartitionKCentres extends Partition {
 
 
         for (int i = 0; i < nbElem; i++) {
-            if (i != elemSpecial) { // Ne pas réajouter l'élément spécial
+            if (i != elemSpecial) { // Ne pas rajouter l'élément spécial
                 int centerIndex = centers.indexOf(nearestCenter[i]);
                 this.parties.get(centerIndex).add(i);
             }
         }
+        System.out.println(centers);
+        System.out.println(Arrays.toString(nearestCenter));
+
+
     }
 
     private int findFurthest(double[] distances) {

@@ -16,6 +16,8 @@ public interface PlannerEndpoints {
     @Operation(description = "Appeler le planner afin d'avoir une planification")
     @ApiResponse(responseCode = "200", description = "La planification calculer par le web service")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/planif")
+    @PostMapping("/planif")
     PlannerResult planif(@RequestBody PlannerParameter params);
+
+
 }

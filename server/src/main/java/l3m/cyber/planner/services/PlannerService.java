@@ -12,10 +12,22 @@ public class PlannerService {
 
     public PlannerResult getResult(PlannerParameter params){
         Planner pl= new Planner(params);
+        for (int i = 0; i < params.matrix().length; i++) {
+            // Parcourir les colonnes de chaque ligne
+            for (int j = 0; j < params.matrix()[i].length; j++) {
+                // Afficher l'élément de la matrice à la position (i, j)
+                System.out.print(params.matrix()[i][j] + " ");
+            }
+        }
+        System.out.println(params.matrix().length);
         pl.divise();
         pl.calculeTournees();
         pl.calculeLongTournees();
         return pl.result();
     }
+
+
+
+
 
 }
