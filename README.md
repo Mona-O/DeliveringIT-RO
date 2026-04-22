@@ -1,5 +1,8 @@
 # Projet intégrateur L3 MIAGE : partie Recherche Opérationnelle
 
+## Contribution personnelle
+J’ai contribué à la partie algorithmique du projet en développant une solution d’optimisation pour la génération de tournées de livraison. L’objectif était de modéliser le problème sous forme de cycle hamiltonien, afin de déterminer un parcours optimal couvrant l’ensemble des points. Pour cela, j’ai combiné l’utilisation de l’algorithme de Kruskal pour construire une structure de graphe optimisée, avec un parcours en profondeur (DFS) pour générer une tournée exploitable. Ce travail m’a permis de mettre en pratique des concepts avancés en théorie des graphes et en optimisation combinatoire.
+
 ## Objectif
 
 Cette partie du projet sert à optimiser les livraisons, c'est-à-dire diviser les livraisons à faire entre les différents livreurs et optmiser la tournée de chacun. Vous allez l'implémenter sous la forme d'un webservice qui :
